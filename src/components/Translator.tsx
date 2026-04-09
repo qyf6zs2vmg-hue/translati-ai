@@ -163,15 +163,15 @@ export function Translator({ onTranslate }: TranslatorProps) {
   };
 
   return (
-    <div className="space-y-6">
-      <Card className="border-none shadow-xl bg-white dark:bg-slate-900 overflow-hidden rounded-3xl">
+    <div className="space-y-4 md:space-y-6">
+      <Card className="border-none shadow-xl bg-white dark:bg-slate-900 overflow-hidden rounded-2xl md:rounded-3xl">
         <CardContent className="p-0">
-          <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="flex flex-col md:grid md:grid-cols-2 h-auto md:h-[500px]">
             {/* Input Section */}
-            <div className="p-6 space-y-4 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800">
+            <div className="p-3 md:p-6 space-y-2 md:space-y-4 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800 flex flex-col min-h-[180px] md:min-h-0">
               <div className="flex items-center justify-between">
                 <Select value={fromLang} onValueChange={setFromLang}>
-                  <SelectTrigger className="w-[180px] border-none bg-slate-50 dark:bg-slate-800 font-medium rounded-xl">
+                  <SelectTrigger className="w-[120px] md:w-[180px] border-none bg-slate-50 dark:bg-slate-800 font-medium rounded-xl h-8 md:h-10 text-xs md:text-sm">
                     <SelectValue placeholder="Select Language" />
                   </SelectTrigger>
                   <SelectContent>
@@ -186,12 +186,12 @@ export function Translator({ onTranslate }: TranslatorProps) {
                     <TooltipTrigger 
                       className={cn(
                         buttonVariants({ variant: 'ghost', size: 'icon' }), 
-                        "rounded-full",
+                        "rounded-full h-7 w-7 md:h-10 md:w-10",
                         autoTranslate ? 'text-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'text-slate-400'
                       )}
                       onClick={() => setAutoTranslate(!autoTranslate)}
                     >
-                      <Zap className="w-4 h-4" />
+                      <Zap className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     </TooltipTrigger>
                     <TooltipContent>Auto-translate as you type</TooltipContent>
                   </Tooltip>
@@ -199,12 +199,12 @@ export function Translator({ onTranslate }: TranslatorProps) {
                     <TooltipTrigger 
                       className={cn(
                         buttonVariants({ variant: 'ghost', size: 'icon' }), 
-                        "rounded-full h-12 w-12",
+                        "rounded-full h-8 w-8 md:h-12 md:w-12",
                         isListening ? 'text-red-500 bg-red-50 dark:bg-red-900/20 animate-pulse ring-2 ring-red-500' : 'text-blue-600 bg-blue-50 dark:bg-blue-900/20'
                       )}
                       onClick={toggleListening}
                     >
-                      {isListening ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
+                      {isListening ? <MicOff className="w-4 h-4 md:w-6 md:h-6" /> : <Mic className="w-4 h-4 md:w-6 md:h-6" />}
                     </TooltipTrigger>
                     <TooltipContent>{isListening ? 'Stop listening' : 'Voice translation'}</TooltipContent>
                   </Tooltip>
@@ -213,22 +213,20 @@ export function Translator({ onTranslate }: TranslatorProps) {
 
               <Textarea
                 placeholder="Enter text to translate..."
-                className="min-h-[200px] border-none bg-transparent text-lg resize-none focus-visible:ring-0 p-0 placeholder:text-slate-300 dark:placeholder:text-slate-600"
+                className="flex-1 min-h-[80px] md:min-h-0 border-none bg-transparent text-sm md:text-lg resize-none focus-visible:ring-0 p-0 placeholder:text-slate-300 dark:placeholder:text-slate-600"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
               />
 
-              <div className="flex items-center justify-between pt-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400">{inputText.length} / 5000</span>
-                </div>
+              <div className="flex items-center justify-between pt-1">
+                <span className="text-[9px] md:text-xs text-slate-400">{inputText.length} / 5000</span>
                 {!autoTranslate && (
                   <Button 
                     onClick={() => handleTranslate()} 
                     disabled={isLoading || !inputText.trim()}
-                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-6 shadow-lg shadow-blue-500/20"
+                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-3 md:px-6 h-8 md:h-10 shadow-lg shadow-blue-500/20 text-xs"
                   >
-                    {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Sparkles className="w-4 h-4 mr-2" />}
+                    {isLoading ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <Sparkles className="w-3 h-3 mr-1" />}
                     Translate
                   </Button>
                 )}
@@ -236,11 +234,11 @@ export function Translator({ onTranslate }: TranslatorProps) {
             </div>
 
             {/* Output Section */}
-            <div className="p-6 space-y-4 bg-slate-50/50 dark:bg-slate-800/20">
+            <div className="p-3 md:p-6 space-y-2 md:space-y-4 bg-slate-50/50 dark:bg-slate-800/20 flex flex-col min-h-[180px] md:min-h-0">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 md:gap-2">
                   <Select value={toLang} onValueChange={setToLang}>
-                    <SelectTrigger className="w-[180px] border-none bg-white dark:bg-slate-800 font-medium rounded-xl shadow-sm">
+                    <SelectTrigger className="w-[120px] md:w-[180px] border-none bg-white dark:bg-slate-800 font-medium rounded-xl shadow-sm h-8 md:h-10 text-xs md:text-sm">
                       <SelectValue placeholder="Select Language" />
                     </SelectTrigger>
                     <SelectContent>
@@ -250,77 +248,75 @@ export function Translator({ onTranslate }: TranslatorProps) {
                     </SelectContent>
                   </Select>
                   
-                  <Button variant="ghost" size="icon" onClick={handleSwap} disabled={fromLang === 'Auto'} className="rounded-full">
-                    <ArrowRightLeft className="w-4 h-4" />
+                  <Button variant="ghost" size="icon" onClick={handleSwap} disabled={fromLang === 'Auto'} className="rounded-full h-7 w-7 md:h-10 md:w-10">
+                    <ArrowRightLeft className="w-3.5 h-3.5 md:w-4 md:h-4" />
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-1">
-                  <Select value={tone} onValueChange={(v: Tone) => setTone(v)}>
-                    <SelectTrigger className="w-[120px] border-none bg-white dark:bg-slate-800 text-xs rounded-xl shadow-sm h-8">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="casual">Casual</SelectItem>
-                      <SelectItem value="formal">Formal</SelectItem>
-                      <SelectItem value="slang">Slang</SelectItem>
-                      <SelectItem value="professional">Professional</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <Select value={tone} onValueChange={(v: Tone) => setTone(v)}>
+                  <SelectTrigger className="w-[80px] md:w-[120px] border-none bg-white dark:bg-slate-800 text-[9px] md:text-xs rounded-xl shadow-sm h-7 md:h-8">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="casual">Casual</SelectItem>
+                    <SelectItem value="formal">Formal</SelectItem>
+                    <SelectItem value="slang">Slang</SelectItem>
+                    <SelectItem value="professional">Professional</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
-              <div className="min-h-[200px] text-lg font-medium">
+              <div className="flex-1 min-h-[80px] md:min-h-0 text-sm md:text-lg font-medium overflow-y-auto custom-scrollbar">
                 {isLoading ? (
-                  <div className="flex flex-col items-center justify-center h-full space-y-4 text-slate-400">
-                    <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-                    <p className="text-sm animate-pulse">Translating...</p>
+                  <div className="flex flex-col items-center justify-center h-full space-y-2 text-slate-400">
+                    <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+                    <p className="text-xs animate-pulse">Translating...</p>
                   </div>
                 ) : result ? (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="space-y-4"
+                    className="space-y-2 md:space-y-4"
                   >
                     <p className="text-slate-800 dark:text-slate-200 leading-relaxed">
                       {result.translation}
                     </p>
                     
                     {result.contextNote && (
-                      <div className="flex items-start gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
-                        <Info className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                        <p className="text-xs text-blue-700 dark:text-blue-300 italic">
+                      <div className="flex items-start gap-1 p-1.5 md:p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
+                        <Info className="w-2.5 h-2.5 md:w-4 md:h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                        <p className="text-[9px] md:text-xs text-blue-700 dark:text-blue-300 italic">
                           {result.contextNote}
                         </p>
                       </div>
                     )}
                   </motion.div>
                 ) : (
-                  <p className="text-slate-300 dark:text-slate-600 italic">Translation will appear here...</p>
+                  <p className="text-slate-300 dark:text-slate-600 italic text-xs md:text-base">Translation will appear here...</p>
                 )}
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-4">
+              <div className="flex items-center justify-end gap-1 md:gap-2 pt-1">
                 <Button 
                   variant="ghost" 
                   size="icon" 
                   onClick={() => handleSpeak(result?.translation || '', toLang)}
                   disabled={!result}
-                  className="rounded-full"
+                  className="rounded-full h-7 w-7 md:h-10 md:w-10"
                 >
-                  <Volume2 className="w-5 h-5" />
+                  <Volume2 className="w-3.5 h-3.5 md:w-5 md:h-5" />
                 </Button>
                 <Button 
                   variant="ghost" 
                   size="icon" 
                   onClick={handleCopy}
                   disabled={!result}
-                  className="rounded-full"
+                  className="rounded-full h-7 w-7 md:h-10 md:w-10"
                 >
-                  {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
+                  {copied ? <Check className="w-3.5 h-3.5 md:w-5 md:h-5 text-green-500" /> : <Copy className="w-3.5 h-3.5 md:w-5 md:h-5" />}
                 </Button>
-                <Button variant="ghost" size="icon" disabled={!result} className="rounded-full">
-                  <Share2 className="w-5 h-5" />
+                <Button variant="ghost" size="icon" disabled={!result} className="rounded-full h-7 w-7 md:h-10 md:w-10">
+                  <Share2 className="w-3.5 h-3.5 md:w-5 md:h-5" />
                 </Button>
               </div>
             </div>

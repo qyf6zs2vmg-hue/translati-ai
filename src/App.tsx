@@ -7,6 +7,7 @@ import { ConversationMode } from './components/ConversationMode';
 import { Flashcards } from './components/Flashcards';
 import { OCR } from './components/OCR';
 import { QuickPhrases } from './components/QuickPhrases';
+import { Onboarding } from './components/Onboarding';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Languages, History as HistoryIcon, MessageSquare, BookOpen, Camera, Settings as SettingsIcon, Sun, Moon, Monitor, Quote } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -122,7 +123,7 @@ export default function App() {
           </div>
         </header>
 
-        <main className="container mx-auto px-4 py-8 max-w-5xl">
+        <main className="container mx-auto px-2 md:px-4 py-4 md:py-8 max-w-5xl">
           <Tabs defaultValue="translate" className="space-y-8">
             <div className="flex justify-center">
               <TabsList className="grid grid-cols-6 w-full max-w-3xl bg-white dark:bg-slate-900 border shadow-sm rounded-full p-1">
@@ -239,6 +240,7 @@ export default function App() {
         </footer>
         
         <Toaster position="bottom-right" richColors />
+        <Onboarding />
       </div>
     </TooltipProvider>
   );

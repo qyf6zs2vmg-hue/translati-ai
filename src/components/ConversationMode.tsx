@@ -46,6 +46,24 @@ export function ConversationMode() {
 
   const [lang1, setLang1] = useState('en');
   const [lang2, setLang2] = useState('ru');
+  const activeSenderRef = useRef<'user1' | 'user2' | null>(null);
+
+  const getLocale = (code: string) => {
+    const locales: Record<string, string> = {
+      en: 'en-US',
+      ru: 'ru-RU',
+      uz: 'uz-UZ',
+      tr: 'tr-TR',
+      es: 'es-ES',
+      fr: 'fr-FR',
+      de: 'de-DE',
+      ar: 'ar-SA',
+      zh: 'zh-CN',
+      ja: 'ja-JP',
+      ko: 'ko-KR'
+    };
+    return locales[code] || code;
+  };
 
   useEffect(() => {
     if ('webkitSpeechRecognition' in window) {
@@ -56,13 +74,17 @@ export function ConversationMode() {
 
       recognitionRef.current.onresult = async (event: any) => {
         const transcript = event.results[0][0].transcript;
-        const sender = isListening!;
-        setIsListening(null);
-        handleNewMessage(sender, transcript);
+        const sender = activeSenderRef.current;
+        if (sender) {
+          setIsListening(null);
+          activeSenderRef.current = null;
+          handleNewMessage(sender, transcript);
+        }
       };
 
       recognitionRef.current.onerror = (event: any) => {
         setIsListening(null);
+        activeSenderRef.current = null;
         if (event.error !== 'no-speech') {
           toast.error(`Speech recognition error: ${event.error}`);
         }
@@ -70,9 +92,10 @@ export function ConversationMode() {
 
       recognitionRef.current.onend = () => {
         setIsListening(null);
+        activeSenderRef.current = null;
       };
     }
-  }, [isListening]);
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -89,7 +112,7 @@ export function ConversationMode() {
 
     try {
       const res = await geminiService.translate(text, from, to);
-      const newMessage: Message = {
+      const newMessage: Message & { details?: any } = {
         id: generateId('msg'),
         sender,
         text,
@@ -97,6 +120,7 @@ export function ConversationMode() {
         timestamp: Date.now(),
         fromLang: from,
         toLang: to,
+        details: res // Store full result for details view
       };
       setMessages(prev => [...prev, newMessage]);
       
@@ -111,10 +135,15 @@ export function ConversationMode() {
 
   const handleSpeak = (text: string, lang: string) => {
     if (!text) return;
-    window.speechSynthesis.cancel(); // Stop any current speech
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang;
-    window.speechSynthesis.speak(utterance);
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = getLocale(lang);
+      utterance.rate = 0.9; // Slightly slower for clarity
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      console.error('Speech synthesis error:', e);
+    }
   };
 
   const startListening = (sender: 'user1' | 'user2') => {
@@ -124,15 +153,24 @@ export function ConversationMode() {
     }
 
     if (isListening) {
-      recognitionRef.current.stop();
-      setIsListening(null);
-    } else {
-      recognitionRef.current.lang = sender === 'user1' ? lang1 : lang2;
       try {
-        recognitionRef.current.start();
+        recognitionRef.current.stop();
+      } catch (e) {}
+      setIsListening(null);
+      activeSenderRef.current = null;
+    } else {
+      const langCode = sender === 'user1' ? lang1 : lang2;
+      recognitionRef.current.lang = getLocale(langCode);
+      try {
+        activeSenderRef.current = sender;
         setIsListening(sender);
+        recognitionRef.current.start();
       } catch (e) {
         console.error('Speech recognition start error:', e);
+        setIsListening(null);
+        activeSenderRef.current = null;
+        // If already started, just stop it first
+        try { recognitionRef.current.stop(); } catch(err) {}
       }
     }
   };
@@ -276,17 +314,48 @@ export function ConversationMode() {
                       </p>
                       <p className="font-bold text-xl leading-tight tracking-tight">{msg.translation}</p>
                       
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className={cn(
-                          "absolute -bottom-2 -right-2 h-8 w-8 rounded-full shadow-lg transition-transform hover:scale-110",
-                          msg.sender === 'user1' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-white text-blue-600 hover:bg-slate-50'
-                        )}
-                        onClick={() => handleSpeak(msg.translation, msg.toLang)}
-                      >
-                        <Volume2 className="w-4 h-4" />
-                      </Button>
+                      <div className="flex items-center gap-1 mt-3">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className={cn(
+                            "h-8 w-8 rounded-full shadow-sm transition-transform hover:scale-110",
+                            msg.sender === 'user1' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-white text-blue-600 hover:bg-slate-50'
+                          )}
+                          onClick={() => handleSpeak(msg.translation, msg.toLang)}
+                        >
+                          <Volume2 className="w-4 h-4" />
+                        </Button>
+                        
+                        {(msg as any).details?.dictionary?.length > 0 || (msg as any).details?.alternatives?.length > 0 ? (
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className={cn(
+                                  "h-8 w-8 rounded-full shadow-sm transition-transform hover:scale-110",
+                                  msg.sender === 'user1' ? 'bg-slate-100 text-slate-600' : 'bg-blue-500 text-white'
+                                )}
+                                onClick={() => {
+                                  const details = (msg as any).details;
+                                  let info = `Dictionary:\n`;
+                                  details.dictionary.forEach((d: any) => {
+                                    info += `• ${d.partOfSpeech}: ${d.meaning}\n`;
+                                  });
+                                  if (details.alternatives.length > 0) {
+                                    info += `\nAlternatives: ${details.alternatives.join(', ')}`;
+                                  }
+                                  toast.info(info, { duration: 5000 });
+                                }}
+                              >
+                                <Info className="w-4 h-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Show word details</TooltipContent>
+                          </Tooltip>
+                        ) : null}
+                      </div>
                     </div>
                   </div>
                 </motion.div>
