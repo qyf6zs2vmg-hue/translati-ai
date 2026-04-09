@@ -1,0 +1,5 @@
+{
+  "name": "Lingua AI",
+  "description": "A professional AI-powered translator with context-aware translations, OCR, and conversation mode.",
+  "requestFramePermissions": ["camera", "microphone"]
+}
