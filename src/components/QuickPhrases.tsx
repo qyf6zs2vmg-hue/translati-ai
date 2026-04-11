@@ -71,10 +71,20 @@ export function QuickPhrases() {
   const [isTranslatingAll, setIsTranslatingAll] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('lingua_phrases');
-    if (saved) {
-      setPhrases(JSON.parse(saved));
-    } else {
+    try {
+      const saved = localStorage.getItem('lingua_phrases');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          setPhrases(parsed);
+        } else {
+          setPhrases(DEFAULT_PHRASES);
+        }
+      } else {
+        setPhrases(DEFAULT_PHRASES);
+      }
+    } catch (error) {
+      console.error("Error loading phrases:", error);
       setPhrases(DEFAULT_PHRASES);
     }
   }, []);

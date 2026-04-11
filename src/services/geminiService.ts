@@ -2,7 +2,18 @@ import Tesseract from 'tesseract.js';
 import { TranslationResult, Tone } from "../types";
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let aiInstance: GoogleGenAI | null = null;
+
+function getAi() {
+  if (!aiInstance) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error("GEMINI_API_KEY is not defined. Please set it in the settings.");
+    }
+    aiInstance = new GoogleGenAI({ apiKey });
+  }
+  return aiInstance;
+}
 
 export const geminiService = {
   async processText(text: string, action: 'simplify' | 'explain' | 'summarize' | 'rephrase' | 'translateSimplify', targetLang?: string): Promise<string> {
@@ -17,11 +28,11 @@ export const geminiService = {
     };
 
     try {
+      const ai = getAi();
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: `${prompts[action]}\n\nText: "${text}"`,
       });
-
       return response.text || "Не удалось обработать текст.";
     } catch (error) {
       console.error(`Gemini process error (${action}):`, error);

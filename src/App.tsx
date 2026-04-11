@@ -24,27 +24,41 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>('system');
 
   useEffect(() => {
-    const savedHistory = localStorage.getItem('lingua_history');
-    const savedFavorites = localStorage.getItem('lingua_favorites');
-    const savedFlashcards = localStorage.getItem('lingua_flashcards');
-    const savedTheme = localStorage.getItem('lingua_theme') as Theme;
+    try {
+      const savedHistory = localStorage.getItem('lingua_history');
+      const savedFavorites = localStorage.getItem('lingua_favorites');
+      const savedFlashcards = localStorage.getItem('lingua_flashcards');
+      const savedTheme = localStorage.getItem('lingua_theme') as Theme;
 
-    if (savedHistory) {
-      const parsed = JSON.parse(savedHistory);
-      const unique = parsed.filter((v: any, i: number, a: any[]) => a.findIndex(t => t.id === v.id) === i);
-      setHistory(unique);
+      if (savedHistory) {
+        const parsed = JSON.parse(savedHistory);
+        if (Array.isArray(parsed)) {
+          const unique = parsed.filter((v: any, i: number, a: any[]) => a.findIndex(t => t.id === v.id) === i);
+          setHistory(unique);
+        }
+      }
+      if (savedFavorites) {
+        const parsed = JSON.parse(savedFavorites);
+        if (Array.isArray(parsed)) {
+          const unique = parsed.filter((v: any, i: number, a: any[]) => a.findIndex(t => t.id === v.id) === i);
+          setFavorites(unique);
+        }
+      }
+      if (savedFlashcards) {
+        const parsed = JSON.parse(savedFlashcards);
+        if (Array.isArray(parsed)) {
+          const unique = parsed.filter((v: any, i: number, a: any[]) => a.findIndex(t => t.id === v.id) === i);
+          setFlashcards(unique);
+        }
+      }
+      if (savedTheme) setTheme(savedTheme);
+    } catch (error) {
+      console.error("Error loading from localStorage:", error);
+      // Clear corrupted data
+      localStorage.removeItem('lingua_history');
+      localStorage.removeItem('lingua_favorites');
+      localStorage.removeItem('lingua_flashcards');
     }
-    if (savedFavorites) {
-      const parsed = JSON.parse(savedFavorites);
-      const unique = parsed.filter((v: any, i: number, a: any[]) => a.findIndex(t => t.id === v.id) === i);
-      setFavorites(unique);
-    }
-    if (savedFlashcards) {
-      const parsed = JSON.parse(savedFlashcards);
-      const unique = parsed.filter((v: any, i: number, a: any[]) => a.findIndex(t => t.id === v.id) === i);
-      setFlashcards(unique);
-    }
-    if (savedTheme) setTheme(savedTheme);
   }, []);
 
   useEffect(() => {
