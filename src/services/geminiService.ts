@@ -1,7 +1,34 @@
 import Tesseract from 'tesseract.js';
 import { TranslationResult, Tone } from "../types";
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export const geminiService = {
+  async processText(text: string, action: 'simplify' | 'explain' | 'summarize' | 'rephrase' | 'translateSimplify', targetLang?: string): Promise<string> {
+    if (!text.trim()) return "";
+
+    const prompts = {
+      simplify: "Rewrite the following text in very simple language that is easy to understand for everyone. Keep the core meaning but use basic vocabulary and shorter sentences.",
+      explain: "Explain the meaning of the following text as if you were talking to a complete beginner. Use simple words and provide a short real-life example if possible to illustrate the concept.",
+      summarize: "Provide a concise summary of the following text. Capture only the key meaning and essential points, removing any unnecessary detail.",
+      rephrase: "Rephrase the following text using different wording but maintaining the exact same meaning and tone.",
+      translateSimplify: `Translate the following text into ${targetLang || 'the target language'} and simplify it at the same time. The result should be easy to understand for a non-native speaker or a beginner.`
+    };
+
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: `${prompts[action]}\n\nText: "${text}"`,
+      });
+
+      return response.text || "Не удалось обработать текст.";
+    } catch (error) {
+      console.error(`Gemini process error (${action}):`, error);
+      return "Ошибка: ИИ-помощник временно недоступен. Пожалуйста, попробуйте позже.";
+    }
+  },
+
   async translate(
     text: string,
     from: string,
@@ -57,8 +84,8 @@ export const geminiService = {
           if (synonyms.length > 0) {
             dictionary.push({
               word: text,
-              meaning: `Synonyms: ${synonyms.join(', ')}`,
-              partOfSpeech: `${partOfSpeech} (synonyms)`,
+              meaning: `Синонимы: ${synonyms.join(', ')}`,
+              partOfSpeech: `${partOfSpeech} (синонимы)`,
               examples: []
             });
           }
@@ -71,8 +98,8 @@ export const geminiService = {
         if (examples.length > 0) {
           dictionary.push({
             word: text,
-            meaning: "Usage Examples",
-            partOfSpeech: "context",
+            meaning: "Примеры использования",
+            partOfSpeech: "контекст",
             examples: examples
           });
         }
@@ -83,7 +110,7 @@ export const geminiService = {
         detectedLanguage: data[2] || from,
         alternatives: alternatives.filter((v, i, a) => a.indexOf(v) === i).slice(0, 5),
         dictionary: dictionary.slice(0, 6),
-        contextNote: `Translated using Lingua Pro Engine (${tone} mode)`
+        contextNote: `Переведено с помощью Lingua Pro Engine (режим: ${tone})`
       };
 
     } catch (error) {
@@ -99,7 +126,7 @@ export const geminiService = {
           detectedLanguage: from,
           alternatives: [],
           dictionary: [],
-          contextNote: "Translated using Lingua Basic Engine (Fallback)"
+          contextNote: "Переведено с помощью Lingua Basic Engine (резервный)"
         };
       } catch (e) {
         return {
@@ -107,7 +134,7 @@ export const geminiService = {
           detectedLanguage: from,
           alternatives: [],
           dictionary: [],
-          contextNote: "Translation failed. Showing original text."
+          contextNote: "Ошибка перевода. Показан исходный текст."
         };
       }
     }
@@ -126,8 +153,8 @@ export const geminiService = {
     } catch (error) {
       console.error("OCR error:", error);
       return {
-        original: "Error extracting text",
-        translated: "Error translating text"
+        original: "Ошибка извлечения текста",
+        translated: "Ошибка перевода текста"
       };
     }
   },
@@ -143,7 +170,7 @@ export const geminiService = {
         cards.push({
           front: word,
           back: res.translation,
-          example: `Usage of ${word}`
+          example: `Использование ${word}`
         });
       } catch (e) {
         console.error("Flashcard word translation error:", e);

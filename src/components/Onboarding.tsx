@@ -32,23 +32,23 @@ export function Onboarding() {
 
   const steps = [
     {
-      title: "Welcome to Lingua AI",
-      description: "Experience the next generation of translation. Powered by advanced AI to give you more than just words.",
+      title: "Добро пожаловать в Lingua AI",
+      description: "Познакомьтесь с новым поколением перевода. Продвинутый ИИ дает вам больше, чем просто слова.",
       icon: <Sparkles className="w-12 h-12 text-blue-500" />,
       color: "from-blue-500/20 to-purple-500/20"
     },
     {
-      title: "Real-Time Intelligence",
-      description: "Get instant translations with deep context, synonyms, and usage examples. It's like having a linguist in your pocket.",
+      title: "Интеллект в реальном времени",
+      description: "Получайте мгновенные переводы с глубоким контекстом, синонимами и примерами. Как будто лингвист всегда с вами.",
       icon: <Cpu className="w-12 h-12 text-purple-500" />,
       color: "from-purple-500/20 to-pink-500/20"
     },
     {
-      title: "Why Lingua AI?",
+      title: "Почему Lingua AI?",
       features: [
-        { title: "Pro Engine", desc: "Deeper linguistic data than standard tools." },
-        { title: "Voice Chat", desc: "Natural face-to-face conversation mode." },
-        { title: "Offline Ready", desc: "Fast, cached results for your history." }
+        { title: "Pro Движок", desc: "Более глубокие лингвистические данные, чем в обычных инструментах." },
+        { title: "Голосовой чат", desc: "Режим естественного общения лицом к лицу." },
+        { title: "Готов к офлайну", desc: "Быстрые кэшированные результаты в вашей истории." }
       ],
       icon: <ShieldCheck className="w-12 h-12 text-green-500" />,
       color: "from-green-500/20 to-blue-500/20"
@@ -135,7 +135,7 @@ export function Onboarding() {
                 onClick={() => step < steps.length - 1 ? setStep(step + 1) : handleComplete()}
                 className="w-full h-14 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-lg shadow-blue-500/25 group"
               >
-                {step === steps.length - 1 ? "Get Started" : "Continue"}
+                {step === steps.length - 1 ? "Начать" : "Продолжить"}
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               
@@ -145,7 +145,7 @@ export function Onboarding() {
                   onClick={handleComplete}
                   className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                 >
-                  Skip
+                  Пропустить
                 </Button>
               )}
             </div>

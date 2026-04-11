@@ -29,18 +29,18 @@ import { cn, generateId } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 
 const LANGUAGES: Language[] = [
-  { code: 'Auto', name: 'Auto Detect' },
-  { code: 'en', name: 'English' },
-  { code: 'ru', name: 'Russian' },
-  { code: 'uz', name: 'Uzbek' },
-  { code: 'tr', name: 'Turkish' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'fr', name: 'French' },
-  { code: 'de', name: 'German' },
-  { code: 'ar', name: 'Arabic' },
-  { code: 'zh', name: 'Chinese' },
-  { code: 'ja', name: 'Japanese' },
-  { code: 'ko', name: 'Korean' },
+  { code: 'Auto', name: 'Автоопределение' },
+  { code: 'en', name: 'Английский' },
+  { code: 'ru', name: 'Русский' },
+  { code: 'uz', name: 'Узбекский' },
+  { code: 'tr', name: 'Турецкий' },
+  { code: 'es', name: 'Испанский' },
+  { code: 'fr', name: 'Французский' },
+  { code: 'de', name: 'Немецкий' },
+  { code: 'ar', name: 'Арабский' },
+  { code: 'zh', name: 'Китайский' },
+  { code: 'ja', name: 'Японский' },
+  { code: 'ko', name: 'Корейский' },
 ];
 
 interface TranslatorProps {
@@ -81,7 +81,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
 
       recognitionRef.current.onerror = () => {
         setIsListening(false);
-        toast.error('Speech recognition error');
+        toast.error('Ошибка распознавания речи');
       };
 
       recognitionRef.current.onend = () => {
@@ -111,7 +111,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
         isFavorite: false,
       });
     } catch (error) {
-      toast.error('Translation failed. Please try again.');
+      toast.error('Ошибка перевода. Попробуйте еще раз.');
     } finally {
       setIsLoading(false);
     }
@@ -143,7 +143,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
     if (!result?.translation) return;
     navigator.clipboard.writeText(result.translation);
     setCopied(true);
-    toast.success('Copied to clipboard');
+    toast.success('Скопировано в буфер обмена');
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -172,7 +172,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
               <div className="flex items-center justify-between">
                 <Select value={fromLang} onValueChange={setFromLang}>
                   <SelectTrigger className="w-[120px] md:w-[180px] border-none bg-slate-50 dark:bg-slate-800 font-medium rounded-xl h-8 md:h-10 text-xs md:text-sm">
-                    <SelectValue placeholder="Select Language" />
+                    <SelectValue placeholder="Выберите язык" />
                   </SelectTrigger>
                   <SelectContent>
                     {LANGUAGES.map(lang => (
@@ -193,7 +193,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
                     >
                       <Zap className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     </TooltipTrigger>
-                    <TooltipContent>Auto-translate as you type</TooltipContent>
+                    <TooltipContent>Автоперевод при вводе</TooltipContent>
                   </Tooltip>
                   <Tooltip>
                     <TooltipTrigger 
@@ -206,13 +206,13 @@ export function Translator({ onTranslate }: TranslatorProps) {
                     >
                       {isListening ? <MicOff className="w-4 h-4 md:w-6 md:h-6" /> : <Mic className="w-4 h-4 md:w-6 md:h-6" />}
                     </TooltipTrigger>
-                    <TooltipContent>{isListening ? 'Stop listening' : 'Voice translation'}</TooltipContent>
+                    <TooltipContent>{isListening ? 'Остановить' : 'Голосовой перевод'}</TooltipContent>
                   </Tooltip>
                 </div>
               </div>
 
               <Textarea
-                placeholder="Enter text to translate..."
+                placeholder="Введите текст для перевода..."
                 className="flex-1 min-h-[80px] md:min-h-0 border-none bg-transparent text-sm md:text-lg resize-none focus-visible:ring-0 p-0 placeholder:text-slate-300 dark:placeholder:text-slate-600"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
@@ -227,7 +227,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
                     className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-3 md:px-6 h-8 md:h-10 shadow-lg shadow-blue-500/20 text-xs"
                   >
                     {isLoading ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <Sparkles className="w-3 h-3 mr-1" />}
-                    Translate
+                    Перевести
                   </Button>
                 )}
               </div>
@@ -239,7 +239,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
                 <div className="flex items-center gap-1 md:gap-2">
                   <Select value={toLang} onValueChange={setToLang}>
                     <SelectTrigger className="w-[120px] md:w-[180px] border-none bg-white dark:bg-slate-800 font-medium rounded-xl shadow-sm h-8 md:h-10 text-xs md:text-sm">
-                      <SelectValue placeholder="Select Language" />
+                      <SelectValue placeholder="Выберите язык" />
                     </SelectTrigger>
                     <SelectContent>
                       {LANGUAGES.filter(l => l.code !== 'Auto').map(lang => (
@@ -258,10 +258,10 @@ export function Translator({ onTranslate }: TranslatorProps) {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="casual">Casual</SelectItem>
-                    <SelectItem value="formal">Formal</SelectItem>
-                    <SelectItem value="slang">Slang</SelectItem>
-                    <SelectItem value="professional">Professional</SelectItem>
+                    <SelectItem value="casual">Обычный</SelectItem>
+                    <SelectItem value="formal">Официальный</SelectItem>
+                    <SelectItem value="slang">Сленг</SelectItem>
+                    <SelectItem value="professional">Профессиональный</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -270,7 +270,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center h-full space-y-2 text-slate-400">
                     <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
-                    <p className="text-xs animate-pulse">Translating...</p>
+                    <p className="text-xs animate-pulse">Переводим...</p>
                   </div>
                 ) : result ? (
                   <motion.div
@@ -292,7 +292,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
                     )}
                   </motion.div>
                 ) : (
-                  <p className="text-slate-300 dark:text-slate-600 italic text-xs md:text-base">Translation will appear here...</p>
+                  <p className="text-slate-300 dark:text-slate-600 italic text-xs md:text-base">Здесь появится перевод...</p>
                 )}
               </div>
 
@@ -340,7 +340,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
                 <CardContent className="p-6 space-y-4">
                   <div className="flex items-center gap-2 text-blue-600">
                     <Book className="w-5 h-5" />
-                    <h3 className="font-bold">Dictionary</h3>
+                    <h3 className="font-bold">Словарь</h3>
                   </div>
                   <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                     {result.dictionary.map((item, i) => {
@@ -372,7 +372,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
                 <CardContent className="p-6 space-y-4">
                   <div className="flex items-center gap-2 text-purple-600">
                     <ListRestart className="w-5 h-5" />
-                    <h3 className="font-bold">Alternatives</h3>
+                    <h3 className="font-bold">Варианты</h3>
                   </div>
                   <div className="space-y-3">
                     {result.alternatives.map((alt, i) => (
@@ -381,7 +381,7 @@ export function Translator({ onTranslate }: TranslatorProps) {
                         className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer group"
                         onClick={() => {
                           setResult({ ...result, translation: alt });
-                          toast.info('Translation updated with alternative');
+                          toast.info('Перевод обновлен выбранным вариантом');
                         }}
                       >
                         <p className="text-sm text-slate-700 dark:text-slate-300">{alt}</p>

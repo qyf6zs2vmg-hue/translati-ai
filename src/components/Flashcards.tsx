@@ -36,9 +36,9 @@ export function Flashcards({ flashcards, onAddFlashcards, onRemoveFlashcard }: F
       }));
       onAddFlashcards(newCards);
       setGenerateInput('');
-      toast.success(`Generated ${newCards.length} flashcards!`);
+      toast.success(`Создано ${newCards.length} карточек!`);
     } catch (error) {
-      toast.error('Failed to generate flashcards');
+      toast.error('Не удалось создать карточки');
     } finally {
       setIsGenerating(false);
     }
@@ -56,7 +56,7 @@ export function Flashcards({ flashcards, onAddFlashcards, onRemoveFlashcard }: F
       });
       setIsStudying(false);
       setCurrentIndex(0);
-      toast.success('Session complete! Great job!');
+      toast.success('Сессия завершена! Отличная работа!');
     }
   };
 
@@ -72,7 +72,7 @@ export function Flashcards({ flashcards, onAddFlashcards, onRemoveFlashcard }: F
         <div className="flex items-center justify-between">
           <Button variant="ghost" onClick={() => setIsStudying(false)} className="rounded-full">
             <ChevronLeft className="w-4 h-4 mr-2" />
-            Exit Study
+            Выйти
           </Button>
           <span className="text-sm font-bold text-slate-400">
             {currentIndex + 1} / {flashcards.length}
@@ -88,16 +88,16 @@ export function Flashcards({ flashcards, onAddFlashcards, onRemoveFlashcard }: F
             {/* Front */}
             <Card className="absolute inset-0 backface-hidden border-none shadow-2xl rounded-[2rem] flex items-center justify-center p-8 bg-white dark:bg-slate-900">
               <CardContent className="text-center space-y-4">
-                <Badge variant="secondary" className="mb-4">Original</Badge>
+                <Badge variant="secondary" className="mb-4">Оригинал</Badge>
                 <h2 className="text-4xl font-bold tracking-tight">{currentCard.front}</h2>
-                <p className="text-slate-400 text-sm animate-pulse mt-8">Click to flip</p>
+                <p className="text-slate-400 text-sm animate-pulse mt-8">Нажмите, чтобы перевернуть</p>
               </CardContent>
             </Card>
 
             {/* Back */}
             <Card className="absolute inset-0 backface-hidden border-none shadow-2xl rounded-[2rem] flex items-center justify-center p-8 bg-blue-600 text-white rotate-y-180">
               <CardContent className="text-center space-y-6">
-                <Badge variant="outline" className="text-white border-white/20 mb-4">Translation</Badge>
+                <Badge variant="outline" className="text-white border-white/20 mb-4">Перевод</Badge>
                 <h2 className="text-4xl font-bold tracking-tight">{currentCard.back}</h2>
                 {currentCard.example && (
                   <p className="text-blue-100 italic text-lg mt-4">"{currentCard.example}"</p>
@@ -112,7 +112,7 @@ export function Flashcards({ flashcards, onAddFlashcards, onRemoveFlashcard }: F
             <ChevronLeft className="w-6 h-6" />
           </Button>
           <Button size="lg" onClick={handleNext} className="rounded-full px-12 h-16 text-lg bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-500/20">
-            {currentIndex === flashcards.length - 1 ? 'Finish' : 'Next Card'}
+            {currentIndex === flashcards.length - 1 ? 'Завершить' : 'Следующая'}
             <ChevronRight className="w-6 h-6 ml-2" />
           </Button>
         </div>
@@ -127,13 +127,13 @@ export function Flashcards({ flashcards, onAddFlashcards, onRemoveFlashcard }: F
           <CardHeader>
             <CardTitle className="text-xl font-bold flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-blue-600" />
-              AI Card Generator
+              ИИ Генератор карточек
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-slate-500">Paste text or a list of words to generate learning cards automatically.</p>
+            <p className="text-sm text-slate-500">Вставьте текст или список слов для автоматического создания карточек.</p>
             <Input 
-              placeholder="e.g. hello, world, apple..." 
+              placeholder="напр. привет, мир, яблоко..." 
               value={generateInput}
               onChange={(e) => setGenerateInput(e.target.value)}
               className="rounded-xl"
@@ -144,7 +144,7 @@ export function Flashcards({ flashcards, onAddFlashcards, onRemoveFlashcard }: F
               disabled={isGenerating || !generateInput.trim()}
             >
               {isGenerating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Plus className="w-4 h-4 mr-2" />}
-              Generate Cards
+              Создать карточки
             </Button>
           </CardContent>
         </Card>
@@ -156,7 +156,7 @@ export function Flashcards({ flashcards, onAddFlashcards, onRemoveFlashcard }: F
             onClick={() => setIsStudying(true)}
           >
             <Brain className="w-6 h-6 mr-3" />
-            Start Study Session
+            Начать обучение
           </Button>
         )}
       </div>
@@ -166,16 +166,16 @@ export function Flashcards({ flashcards, onAddFlashcards, onRemoveFlashcard }: F
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-xl font-bold flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-blue-600" />
-              Your Flashcards
+              Ваши карточки
             </CardTitle>
-            <Badge variant="secondary" className="rounded-full">{flashcards.length} Cards</Badge>
+            <Badge variant="secondary" className="rounded-full">{flashcards.length} Карточек</Badge>
           </CardHeader>
           <CardContent>
             <ScrollArea className="h-[400px] pr-4">
               {flashcards.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 text-slate-400 space-y-4">
                   <RotateCcw className="w-12 h-12 opacity-20" />
-                  <p className="text-sm italic">No cards yet. Generate some to start learning!</p>
+                  <p className="text-sm italic">Карточек пока нет. Создайте их, чтобы начать учиться!</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

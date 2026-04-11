@@ -18,7 +18,7 @@ interface HistoryProps {
 export function History({ history, favorites, onToggleFavorite, onClearHistory }: HistoryProps) {
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast.success('Copied to clipboard');
+    toast.success('Скопировано в буфер обмена');
   };
 
   const handleSpeak = (text: string, lang: string) => {
@@ -80,25 +80,25 @@ export function History({ history, favorites, onToggleFavorite, onClearHistory }
   return (
     <Card className="border-none shadow-xl bg-white dark:bg-slate-900 rounded-3xl overflow-hidden">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-xl font-bold">Your Activity</CardTitle>
+        <CardTitle className="text-xl font-bold">Ваша активность</CardTitle>
         <Button variant="ghost" size="sm" onClick={onClearHistory} className="text-slate-400 hover:text-red-500 rounded-full">
           <Trash2 className="w-4 h-4 mr-2" />
-          Clear
+          Очистить
         </Button>
       </CardHeader>
       <CardContent className="p-6">
         <Tabs defaultValue="all" className="space-y-6">
           <TabsList className="bg-slate-100 dark:bg-slate-800 rounded-full p-1 w-full max-w-[300px]">
-            <TabsTrigger value="all" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 shadow-none">All History</TabsTrigger>
-            <TabsTrigger value="favorites" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 shadow-none">Favorites</TabsTrigger>
+            <TabsTrigger value="all" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 shadow-none">Вся история</TabsTrigger>
+            <TabsTrigger value="favorites" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 shadow-none">Избранное</TabsTrigger>
           </TabsList>
 
           <ScrollArea className="h-[500px] pr-4">
             <TabsContent value="all" className="m-0">
-              {renderList(history, 'No history yet. Start translating!', 'hist')}
+              {renderList(history, 'История пуста. Начните переводить!', 'hist')}
             </TabsContent>
             <TabsContent value="favorites" className="m-0">
-              {renderList(favorites, 'No favorites yet. Star your favorite translations!', 'fav')}
+              {renderList(favorites, 'Избранного пока нет. Отмечайте лучшие переводы звездочкой!', 'fav')}
             </TabsContent>
           </ScrollArea>
         </Tabs>

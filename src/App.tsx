@@ -8,8 +8,9 @@ import { Flashcards } from './components/Flashcards';
 import { OCR } from './components/OCR';
 import { QuickPhrases } from './components/QuickPhrases';
 import { Onboarding } from './components/Onboarding';
+import { SmartAssistant } from './components/SmartAssistant';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Languages, History as HistoryIcon, MessageSquare, BookOpen, Camera, Settings as SettingsIcon, Sun, Moon, Monitor, Quote } from 'lucide-react';
+import { Languages, History as HistoryIcon, MessageSquare, BookOpen, Camera, Settings as SettingsIcon, Sun, Moon, Monitor, Quote, Lightbulb } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { HistoryItem, Flashcard, Theme } from './types';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -106,13 +107,13 @@ export default function App() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => setTheme('light')}>
-                    <Sun className="w-4 h-4 mr-2" /> Light
+                    <Sun className="w-4 h-4 mr-2" /> Светлая
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setTheme('dark')}>
-                    <Moon className="w-4 h-4 mr-2" /> Dark
+                    <Moon className="w-4 h-4 mr-2" /> Темная
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setTheme('system')}>
-                    <Monitor className="w-4 h-4 mr-2" /> System
+                    <Monitor className="w-4 h-4 mr-2" /> Системная
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -126,14 +127,18 @@ export default function App() {
         <main className="container mx-auto px-2 md:px-4 py-4 md:py-8 max-w-5xl">
           <Tabs defaultValue="translate" className="space-y-8">
             <div className="flex justify-center">
-              <TabsList className="grid grid-cols-6 w-full max-w-3xl bg-white dark:bg-slate-900 border shadow-sm rounded-full p-1">
+              <TabsList className="grid grid-cols-7 w-full max-w-4xl bg-white dark:bg-slate-900 border shadow-sm rounded-full p-1">
                 <TabsTrigger value="translate" className="rounded-full data-[state=active]:bg-blue-600 data-[state=active]:text-white">
                   <Languages className="w-4 h-4 mr-2 hidden sm:inline" />
-                  Translate
+                  Перевод
                 </TabsTrigger>
                 <TabsTrigger value="conversation" className="rounded-full data-[state=active]:bg-blue-600 data-[state=active]:text-white">
                   <MessageSquare className="w-4 h-4 mr-2 hidden sm:inline" />
-                  Chat
+                  Чат
+                </TabsTrigger>
+                <TabsTrigger value="assistant" className="rounded-full data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                  <Lightbulb className="w-4 h-4 mr-2 hidden sm:inline" />
+                  Ассистент
                 </TabsTrigger>
                 <TabsTrigger value="ocr" className="rounded-full data-[state=active]:bg-blue-600 data-[state=active]:text-white">
                   <Camera className="w-4 h-4 mr-2 hidden sm:inline" />
@@ -141,15 +146,15 @@ export default function App() {
                 </TabsTrigger>
                 <TabsTrigger value="phrases" className="rounded-full data-[state=active]:bg-blue-600 data-[state=active]:text-white">
                   <Quote className="w-4 h-4 mr-2 hidden sm:inline" />
-                  Phrases
+                  Фразы
                 </TabsTrigger>
                 <TabsTrigger value="history" className="rounded-full data-[state=active]:bg-blue-600 data-[state=active]:text-white">
                   <HistoryIcon className="w-4 h-4 mr-2 hidden sm:inline" />
-                  History
+                  История
                 </TabsTrigger>
                 <TabsTrigger value="flashcards" className="rounded-full data-[state=active]:bg-blue-600 data-[state=active]:text-white">
                   <BookOpen className="w-4 h-4 mr-2 hidden sm:inline" />
-                  Cards
+                  Карточки
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -174,6 +179,17 @@ export default function App() {
                   transition={{ duration: 0.3 }}
                 >
                   <ConversationMode />
+                </motion.div>
+              </TabsContent>
+
+              <TabsContent value="assistant">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <SmartAssistant />
                 </motion.div>
               </TabsContent>
 
@@ -235,7 +251,7 @@ export default function App() {
 
         <footer className="py-8 border-t bg-white dark:bg-slate-900 mt-auto">
           <div className="container mx-auto px-4 text-center text-slate-500 text-sm">
-            <p>© 2026 Lingua AI. Professional Translation Reimagined.</p>
+            <p>© 2026 Lingua AI. Профессиональный перевод в новом формате.</p>
           </div>
         </footer>
         

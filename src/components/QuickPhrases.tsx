@@ -29,22 +29,22 @@ import { generateId, cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 
 const CATEGORIES = [
-  { id: 'all', name: 'All', icon: Search },
-  { id: 'travel', name: 'Travel', icon: Plane },
-  { id: 'food', name: 'Food', icon: Utensils },
-  { id: 'hotel', name: 'Hotel', icon: Hotel },
-  { id: 'shopping', name: 'Shopping', icon: ShoppingBag },
-  { id: 'health', name: 'Health', icon: HeartPulse },
+  { id: 'all', name: 'Все', icon: Search },
+  { id: 'travel', name: 'Путешествия', icon: Plane },
+  { id: 'food', name: 'Еда', icon: Utensils },
+  { id: 'hotel', name: 'Отель', icon: Hotel },
+  { id: 'shopping', name: 'Шопинг', icon: ShoppingBag },
+  { id: 'health', name: 'Здоровье', icon: HeartPulse },
 ];
 
 const LANGUAGES = [
-  { code: 'en', name: 'English' },
-  { code: 'ru', name: 'Russian' },
-  { code: 'uz', name: 'Uzbek' },
-  { code: 'tr', name: 'Turkish' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'fr', name: 'French' },
-  { code: 'de', name: 'German' },
+  { code: 'en', name: 'Английский' },
+  { code: 'ru', name: 'Русский' },
+  { code: 'uz', name: 'Узбекский' },
+  { code: 'tr', name: 'Турецкий' },
+  { code: 'es', name: 'Испанский' },
+  { code: 'fr', name: 'Французский' },
+  { code: 'de', name: 'Немецкий' },
 ];
 
 const DEFAULT_PHRASES: Phrase[] = [
@@ -94,7 +94,7 @@ export function QuickPhrases() {
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast.success('Copied to clipboard');
+    toast.success('Скопировано в буфер обмена');
   };
 
   const handleSpeak = (text: string, lang: string) => {
@@ -113,7 +113,7 @@ export function QuickPhrases() {
       p.id === editingId ? { ...p, ...editForm } : p
     ));
     setEditingId(null);
-    toast.success('Phrase updated');
+    toast.success('Фраза обновлена');
   };
 
   const translateAll = async () => {
@@ -124,9 +124,9 @@ export function QuickPhrases() {
         return { ...p, translation: res.translation };
       }));
       setPhrases(updatedPhrases);
-      toast.success('All phrases translated!');
+      toast.success('Все фразы переведены!');
     } catch (e) {
-      toast.error('Translation failed');
+      toast.error('Ошибка перевода');
     } finally {
       setIsTranslatingAll(false);
     }
@@ -136,8 +136,8 @@ export function QuickPhrases() {
     const newPhrase: Phrase = {
       id: generateId('p'),
       category: activeCategory === 'all' ? 'travel' : activeCategory,
-      text: 'New phrase',
-      translation: 'Yangi ibora'
+      text: 'Новая фраза',
+      translation: 'Новая фраза'
     };
     setPhrases(prev => [newPhrase, ...prev]);
     startEditing(newPhrase);
@@ -177,11 +177,11 @@ export function QuickPhrases() {
                 className="flex-1 md:flex-none rounded-xl border-blue-100 dark:border-blue-900 text-blue-600 hover:bg-blue-50"
               >
                 {isTranslatingAll ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Sparkles className="w-4 h-4 mr-2" />}
-                Translate All
+                Перевести все
               </Button>
               <Button onClick={addNewPhrase} className="flex-1 md:flex-none rounded-xl bg-blue-600 hover:bg-blue-700">
                 <Plus className="w-4 h-4 mr-2" />
-                Add New
+                Добавить
               </Button>
             </div>
           </div>
@@ -190,7 +190,7 @@ export function QuickPhrases() {
             <div className="relative w-full md:w-96">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input 
-                placeholder="Search phrases..." 
+                placeholder="Поиск фраз..." 
                 className="pl-10 rounded-xl border-none bg-slate-50 dark:bg-slate-800"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -236,20 +236,20 @@ export function QuickPhrases() {
                         value={editForm.text} 
                         onChange={e => setEditForm({...editForm, text: e.target.value})}
                         className="rounded-xl border-blue-200"
-                        placeholder="Phrase in source language"
+                        placeholder="Фраза на исходном языке"
                       />
                       <Input 
                         value={editForm.translation} 
                         onChange={e => setEditForm({...editForm, translation: e.target.value})}
                         className="rounded-xl border-blue-200"
-                        placeholder="Translation"
+                        placeholder="Перевод"
                       />
                       <div className="flex justify-end gap-2">
                         <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} className="rounded-lg">
-                          <X className="w-4 h-4 mr-1" /> Cancel
+                          <X className="w-4 h-4 mr-1" /> Отмена
                         </Button>
                         <Button size="sm" onClick={saveEdit} className="rounded-lg bg-green-600 hover:bg-green-700">
-                          <Check className="w-4 h-4 mr-1" /> Save
+                          <Check className="w-4 h-4 mr-1" /> Сохранить
                         </Button>
                       </div>
                     </div>

@@ -23,17 +23,17 @@ type Message = {
 };
 
 const LANGUAGES = [
-  { code: 'en', name: 'English' },
-  { code: 'ru', name: 'Russian' },
-  { code: 'uz', name: 'Uzbek' },
-  { code: 'tr', name: 'Turkish' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'fr', name: 'French' },
-  { code: 'de', name: 'German' },
-  { code: 'ar', name: 'Arabic' },
-  { code: 'zh', name: 'Chinese' },
-  { code: 'ja', name: 'Japanese' },
-  { code: 'ko', name: 'Korean' },
+  { code: 'en', name: 'Английский' },
+  { code: 'ru', name: 'Русский' },
+  { code: 'uz', name: 'Узбекский' },
+  { code: 'tr', name: 'Турецкий' },
+  { code: 'es', name: 'Испанский' },
+  { code: 'fr', name: 'Французский' },
+  { code: 'de', name: 'Немецкий' },
+  { code: 'ar', name: 'Арабский' },
+  { code: 'zh', name: 'Китайский' },
+  { code: 'ja', name: 'Японский' },
+  { code: 'ko', name: 'Корейский' },
 ];
 
 export function ConversationMode() {
@@ -86,7 +86,7 @@ export function ConversationMode() {
         setIsListening(null);
         activeSenderRef.current = null;
         if (event.error !== 'no-speech') {
-          toast.error(`Speech recognition error: ${event.error}`);
+          toast.error(`Ошибка распознавания речи: ${event.error}`);
         }
       };
 
@@ -127,7 +127,7 @@ export function ConversationMode() {
       // Auto speak translation
       handleSpeak(res.translation, to);
     } catch (error) {
-      toast.error('Translation failed');
+      toast.error('Ошибка перевода');
     } finally {
       setIsLoading(false);
     }
@@ -183,7 +183,7 @@ export function ConversationMode() {
 
   const clearChat = () => {
     setMessages([]);
-    toast.success('Conversation cleared');
+    toast.success('Чат очищен');
   };
 
   return (
@@ -192,9 +192,9 @@ export function ConversationMode() {
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <CardTitle className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-              Conversation
+              Разговор
             </CardTitle>
-            <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Real-time Translator</p>
+            <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Перевод в реальном времени</p>
           </div>
           
           <div className="flex items-center gap-2">
@@ -209,7 +209,7 @@ export function ConversationMode() {
               >
                 <FlipVertical className="w-4 h-4" />
               </TooltipTrigger>
-              <TooltipContent>Face-to-face mode</TooltipContent>
+              <TooltipContent>Режим лицом к лицу</TooltipContent>
             </Tooltip>
             
             <Tooltip>
@@ -222,7 +222,7 @@ export function ConversationMode() {
               >
                 <Trash2 className="w-4 h-4" />
               </TooltipTrigger>
-              <TooltipContent>Clear conversation</TooltipContent>
+              <TooltipContent>Очистить чат</TooltipContent>
             </Tooltip>
           </div>
         </div>
@@ -264,11 +264,11 @@ export function ConversationMode() {
                 <div className="w-20 h-20 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-2">
                   <Mic className="w-10 h-10 text-blue-500 opacity-40" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-400">Voice Conversation</h3>
+                <h3 className="text-lg font-bold text-slate-400">Голосовой чат</h3>
                 <p className="text-sm text-slate-400 max-w-[300px]">
-                  1. Select languages for both speakers.<br/>
-                  2. Tap the <span className="text-blue-600 font-bold">Blue</span> or <span className="text-slate-600 dark:text-slate-300 font-bold">Grey</span> button to start speaking.<br/>
-                  3. AI will automatically translate and speak back.
+                  1. Выберите языки для обоих собеседников.<br/>
+                  2. Нажмите на <span className="text-blue-600 font-bold">синюю</span> или <span className="text-slate-600 dark:text-slate-300 font-bold">серую</span> кнопку, чтобы начать говорить.<br/>
+                  3. ИИ автоматически переведет и озвучит ответ.
                 </p>
               </div>
             )}
@@ -352,7 +352,7 @@ export function ConversationMode() {
                                 <Info className="w-4 h-4" />
                               </Button>
                             </TooltipTrigger>
-                            <TooltipContent>Show word details</TooltipContent>
+                            <TooltipContent>Показать детали слова</TooltipContent>
                           </Tooltip>
                         ) : null}
                       </div>
@@ -370,7 +370,7 @@ export function ConversationMode() {
               >
                 <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-full shadow-sm border border-slate-100 dark:border-slate-700">
                   <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
-                  <span className="text-xs font-medium text-slate-400">AI is translating...</span>
+                  <span className="text-xs font-medium text-slate-400">ИИ переводит...</span>
                 </div>
               </motion.div>
             )}
@@ -381,7 +381,7 @@ export function ConversationMode() {
         {/* Control Panel */}
         <div className="p-8 border-t bg-white dark:bg-slate-900 grid grid-cols-2 gap-6 relative">
           <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full shadow-lg z-20">
-            Push to Talk
+            Нажми и говори
           </div>
 
           <div className="flex flex-col gap-3">
@@ -396,7 +396,7 @@ export function ConversationMode() {
               )}
             >
               <div className="absolute top-4 left-4">
-                <Badge variant="outline" className="text-[8px] uppercase tracking-tighter opacity-50">Speaker 1</Badge>
+                <Badge variant="outline" className="text-[8px] uppercase tracking-tighter opacity-50">Собеседник 1</Badge>
               </div>
               {isListening === 'user1' && (
                 <motion.div 
@@ -413,7 +413,7 @@ export function ConversationMode() {
                 {isListening === 'user1' ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
               </div>
               <div className="text-center">
-                <p className="text-[10px] font-bold uppercase tracking-widest opacity-50 mb-1">Speaker 1</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest opacity-50 mb-1">Собеседник 1</p>
                 <p className="font-bold text-lg">{LANGUAGES.find(l => l.code === lang1)?.name}</p>
               </div>
             </Button>
@@ -431,7 +431,7 @@ export function ConversationMode() {
               )}
             >
               <div className="absolute top-4 right-4">
-                <Badge variant="outline" className="text-[8px] uppercase tracking-tighter opacity-50 text-blue-100 border-blue-400">Speaker 2</Badge>
+                <Badge variant="outline" className="text-[8px] uppercase tracking-tighter opacity-50 text-blue-100 border-blue-400">Собеседник 2</Badge>
               </div>
               {isListening === 'user2' && (
                 <motion.div 
@@ -451,7 +451,7 @@ export function ConversationMode() {
                 <p className={cn(
                   "text-[10px] font-bold uppercase tracking-widest opacity-50 mb-1",
                   isListening === 'user2' || !isListening ? "text-blue-100" : ""
-                )}>Speaker 2</p>
+                )}>Собеседник 2</p>
                 <p className="font-bold text-lg">{LANGUAGES.find(l => l.code === lang2)?.name}</p>
               </div>
             </Button>
